@@ -14,7 +14,7 @@ pip install -r requirements.txt
 
 ### 2. Настройка конфигурации
 ```bash
-# Скопируйте файл конфигурации
+# Скопируйте файл конфигурации   (copy D:\web_service\.env.example D:\web_service\.env)
 cp .env.example .env
 
 # Отредактируйте .env файл
