@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: ocr_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ocr_translator
+      MYSQL_USER: ocruser
+      MYSQL_PASSWORD: ocrpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ocr_network
+
+  # OCR Translator App
+  ocr_app:
+    build: .
+    container_name: ocr_translator
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=ocruser
+      - DB_PASSWORD=ocrpassword
+      - DB_NAME=ocr_translator
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - FLASK_ENV=production
+    depends_on:
+      - mysql
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - ocr_network
+
+volumes:
+  mysql_data:
+
+networks:
+  ocr_network:
+    driver: bridge

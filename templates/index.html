@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Переводчик</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-language"></i> OCR Переводчик</h1>
+            <p>Загрузите изображение с английским текстом для распознавания и перевода на русский</p>
+        </header>
+
+        <main>
+            <!-- Секция загрузки -->
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Перетащите изображение сюда</h3>
+                        <p>или</p>
+                        <button class="btn btn-primary" id="selectFileBtn">
+                            <i class="fas fa-folder-open"></i> Выбрать файл
+                        </button>
+                        <input type="file" id="fileInput" accept=".jpg,.jpeg,.png" hidden>
+                        <div class="file-info">
+                            <small>Поддерживаемые форматы: JPG, PNG, JPEG</small>
+                            <small>Максимальный размер: 5 МБ</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Прогресс-бар -->
+                <div class="progress-container" id="progressContainer" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">Обработка изображения...</p>
+                </div>
+            </section>
+
+            <!-- Секция результатов -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="result-grid">
+                    <div class="image-preview">
+                        <h3><i class="fas fa-image"></i> Загруженное изображение</h3>
+                        <img id="previewImage" alt="Превью">
+                    </div>
+                    
+                    <div class="text-results">
+                        <div class="original-text">
+                            <h3><i class="fas fa-eye"></i> Распознанный текст</h3>
+                            <div class="text-box" id="originalText"></div>
+                        </div>
+                        
+                        <div class="translated-text">
+                            <h3><i class="fas fa-language"></i> Переведенный текст</h3>
+                            <div class="text-box" id="translatedText"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-success" id="downloadBtn">
+                        <i class="fas fa-download"></i> Скачать перевод
+                    </button>
+                    <button class="btn btn-secondary" id="newTranslationBtn">
+                        <i class="fas fa-plus"></i> Новый перевод
+                    </button>
+                    <button class="btn btn-info" id="historyBtn">
+                        <i class="fas fa-history"></i> История переводов
+                    </button>
+                </div>
+            </section>
+
+            <!-- Секция истории -->
+            <section class="history-section" id="historySection" style="display: none;">
+                <div class="history-header">
+                    <h3><i class="fas fa-history"></i> История переводов</h3>
+                    <button class="btn btn-secondary" id="closeHistoryBtn">
+                        <i class="fas fa-times"></i> Закрыть
+                    </button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- История будет загружена динамически -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Уведомления -->
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
