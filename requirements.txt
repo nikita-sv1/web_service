@@ -1,0 +1,9 @@
+cd D:\web_service
+echo Flask==2.3.3 > requirements.txt
+echo flask-cors==4.0.0 >> requirements.txt
+echo easyocr==1.7.0 >> requirements.txt
+echo google-generativeai==0.3.2 >> requirements.txt
+echo PyMySQL==1.1.0 >> requirements.txt
+echo Pillow==10.0.1 >> requirements.txt
+echo python-dotenv==1.0.0 >> requirements.txt
+echo Werkzeug==2.3.7 >> requirements.txt
