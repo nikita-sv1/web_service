@@ -32,7 +32,7 @@ ocr_reader = easyocr.Reader(['en'])
 
 # Инициализация Gemini API
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -102,8 +102,20 @@ def upload_image():
         
         # Перевод текста
         prompt = f"Переведи следующий английский текст на русский язык. Переведи только текст без дополнительных комментариев:\n\n{extracted_text}"
-        response = model.generate_content(prompt)
-        translated_text = response.text
+        try:
+            response = model.generate_content(prompt)
+            translated_text = response.text
+        except Exception as gemini_error:
+            # Если основная модель не работает, попробуем альтернативную
+            try:
+                alt_model = genai.GenerativeModel('gemini-1.5-pro')
+                response = alt_model.generate_content(prompt)
+                translated_text = response.text
+            except Exception as alt_error:
+                raise Exception(f"Gemini API error: {str(gemini_error)}")
+        
+        if not translated_text or translated_text.strip() == "":
+            raise Exception("Gemini API returned empty response")
         
         # Сохранение в базу данных
         connection = get_db_connection()
